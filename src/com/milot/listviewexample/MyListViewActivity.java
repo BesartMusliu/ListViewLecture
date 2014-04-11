@@ -14,26 +14,62 @@ import android.widget.TextView;
 import com.milot.listviewexample.R;
 
 public class MyListViewActivity extends ListActivity {
+	
+	private class Person {
+		
+		private String firstName;
+		private String lastName;
+		private String description;
+		
+		public Person(){}
+		
+		public Person(String firstName, String lastName, String description) {
+			super();
+			this.firstName = firstName;
+			this.lastName = lastName;
+			this.description = description;
+		}
+		public String getFirstName() {
+			return firstName;
+		}
+		public void setFirstName(String firstName) {
+			this.firstName = firstName;
+		}
+		public String getLastName() {
+			return lastName;
+		}
+		public void setLastName(String lastName) {
+			this.lastName = lastName;
+		}
+		public String getDescription() {
+			return description;
+		}
+		public void setDescription(String description) {
+			this.description = description;
+		}
+		
+		
+	}
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.list_layout);
 		
-		List<String> objects = new ArrayList<String>();
+		List<Person> objects = new ArrayList<Person>();
 		for (int i = 0; i < 20; ++i) {
-			objects.add("test");
+			objects.add(new Person("Luan", "Pula", "KFC"));
 		}
 		
 		setListAdapter(new MyArrayAdapter(this, objects));
 	}
 	
-	private class MyArrayAdapter extends ArrayAdapter<String> {
+	private class MyArrayAdapter extends ArrayAdapter<Person> {
 
-	    List<String> objs;
+	    List<Person> objs;
 	    Context context;
-	    public MyArrayAdapter(Context context,
-	        List<String> objects) {
-	      super(context, 0, objects);
+	    public MyArrayAdapter(Context context, List<Person> objects) {
+	      super(context, R.layout.list_row, objects);
 	      objs = objects;
 	      this.context = context;
 	    }
@@ -53,14 +89,18 @@ public class MyListViewActivity extends ListActivity {
       public View getView(int position, View convertView, ViewGroup parent) {
 	    	ViewHolder holder;
 	    	if (convertView == null) {
-           convertView = getLayoutInflater().inflate(android.R.layout.simple_list_item_1,
+           convertView = getLayoutInflater().inflate(R.layout.list_row,
                         parent, false);
            holder = new ViewHolder(convertView);
            convertView.setTag(holder);
 	    	} else {
 	    		holder = (ViewHolder) convertView.getTag();
 	    	}
-        holder.getTextView().setText(objs.get(position));
+        holder.getTekstiKryesore().setText(objs.get(position).getFirstName() + " " + 
+        									  objs.get(position).getLastName());
+        holder.getTekstiPerfuni().setText(objs.get(position).getDescription());
+        holder.getFoto().setImageResource(R.drawable.ic_launcher);
+        holder.getFoto2().setImageResource(R.drawable.ic_launcher);
 
         return convertView;
       }
